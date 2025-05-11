@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config(); 
 
 // --- CONFIGURATION ---
-const RECIPES_PER_CATEGORY_OR_AREA = 1; // Garder à 1 pour le débogage
+const RECIPES_PER_CATEGORY_OR_AREA = 50; // Garder à 1 pour le débogage
 const API_CALL_DELAY_MEALDB = 200; 
 const API_CALL_DELAY_TRANSLATION = 600; 
 const TRANSLATE_CONTENT = true; 
