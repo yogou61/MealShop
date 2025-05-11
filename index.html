@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>MealShop</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- INTÉGRATION DU FAVICON ICI -->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <!-- Fallback pour certains navigateurs plus anciens ou pour d'autres types d'icônes -->
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="app-container">
+        <header id="app-header">
+            <div class="header-brand-group">
+                <!-- INTÉGRATION DU LOGO ICI -->
+                <img src="images/Logo-MealShop.png" alt="Logo MealShop" class="header-logo-img">
+                <div>
+                    <h1 class="header-site-name">MealShop</h1>
+                    <p class="header-subtitle">Gagnez du temps en cuisine</p>
+                </div>
+            </div>
+            <div class="header-search-container">
+                <input type="text" id="search-input" class="header-search-input" placeholder="Rechercher une recette...">
+            </div>
+            <div class="header-actions">
+            
+            </div>
+        </header>
+
+        <main id="main-content">
+            <!-- Écran d'Accueil -->
+            <div id="home-screen" class="screen">
+                <div id="shopping-list-banner" class="mb-6" style="display: none;">
+                    <div>
+                        <h3 id="banner-recipe-count"></h3>
+                        <p>Prêt à faire vos courses ?</p>
+                    </div>
+                    <button id="banner-view-list-btn">
+                        <span class="icon">📄</span> Voir la liste
+                    </button>
+                </div>
+
+                <div class="mb-6">
+                    <h2 class="section-title">Catégories</h2>
+                    <div id="categories-container">
+                        <!-- Boutons de catégorie chargés par JS -->
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <div class="flex-justify-between-items-center">
+                        <h2 class="section-title" style="margin-bottom: 0;">Nombre de personnes</h2>
+                        <select id="number-of-people-select" aria-label="Nombre de personnes">
+                            <option value="2" selected>2 personnes</option>
+                            <option value="3">3 personnes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <!-- CORRECTION ICI : Rétablissement de la structure pour le titre "Recettes" -->
+                    <div class="flex-justify-between-items-center mb-3">
+                        <h2 class="section-title" style="margin-bottom: 0;">Recettes</h2>
+            
+                    </div>
+                    <div id="recipes-grid" class="recipes-grid-layout"> {/* mt-2 était ici, je l'enlève car mb-3 sur le parent */}
+                        <!-- Les cartes de recettes seront chargées par JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Écran Détail d'une recette -->
+            <div id="recipe-details-screen" class="screen" style="display: none;">
+                <!-- Contenu chargé par JS -->
+            </div>
+
+            <!-- Écran Liste de courses -->
+            <div id="list-screen" class="screen" style="display: none;">
+                <!-- Contenu chargé par JS -->
+            </div>
+
+            <!-- Écran Favoris -->
+            <div id="favorites-screen" class="screen" style="display: none;">
+                <button id="back-to-home-fav" class="header-back-btn mb-4"> 
+                    <span class="icon">⬅️</span> Retour
+                </button>
+                <h2 class="section-title">Mes Recettes Favorites</h2>
+                <div id="favorite-recipes-grid" class="recipes-grid-layout">
+                    <!-- Cartes de recettes favorites chargées par JS -->
+                </div>
+            </div>
+        </main>
+
+        <nav id="bottom-nav">
+            <div class="nav-container">
+                <button data-tab="home" class="nav-btn active-nav text-orange-600" aria-label="Accueil">
+                    <span class="icon-wrapper">
+                        <span class="icon">🏠</span>
+                    </span>
+                    <span class="nav-text">Accueil</span>
+                </button>
+                <button data-tab="favorites" class="nav-btn text-gray-500" aria-label="Favoris">
+                    <span class="icon-wrapper">
+                        <span class="icon">⭐</span>
+                        <span id="nav-favorites-badge" class="nav-badge" style="display: none;">0</span>
+                    </span>
+                    <span class="nav-text">Favoris</span>
+                </button>
+                <button data-tab="list" id="nav-list-button" class="nav-btn text-gray-500" aria-label="Liste de courses">
+                     <span class="icon-wrapper">
+                        <span class="icon">🛒</span>
+                        <span id="nav-list-badge" class="nav-badge" style="display: none;">0</span>
+                    </span>
+                    <span class="nav-text">Liste</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <script src="data-recettes.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>

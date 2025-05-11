@@ -1,0 +1,441 @@
+/* ==========================================================================
+   1. Reset & Base Styles
+   ========================================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    line-height: 1.6;
+    background-color: #f9fafb; /* bg-gray-50 */
+    color: #374151; /* text-gray-700 */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+button {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+input, select, textarea {
+    font-family: inherit;
+}
+
+/* ==========================================================================
+   2. Layout: App Container
+   ========================================================================== */
+.app-container {
+    width: 100%;
+    max-width: 28rem; /* Tailwind sm (448px) */
+    min-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #ffffff; /* white */
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: 70px; /* Space for bottom nav */
+    transition: max-width 0.3s ease-in-out;
+}
+
+@media (min-width: 768px) { /* md (Tailwind: 768px) */
+    .app-container { max-width: 60rem; /* (960px) */ }
+}
+@media (min-width: 1024px) { /* lg (Tailwind: 1024px) */
+    .app-container { max-width: 75rem; /* (1200px) */ }
+}
+@media (min-width: 1280px) { /* xl (Tailwind: 1280px) */
+    .app-container { max-width: 85rem; /* (1360px) */ }
+}
+
+/* ==========================================================================
+   3. Header
+   ========================================================================== */
+#app-header {
+    background-color: #ffffff;
+    padding: 0.75rem 1rem; /* p-3/p-4 */
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* space-x-4 */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* shadow */
+    min-height: 60px;
+}
+
+.header-brand-group { 
+    display: flex; 
+    align-items: center; 
+    gap: 0.75rem; /* Un peu plus d'espace si logo présent */
+}
+.header-logo-img { /* Style pour le logo */
+    height: 60px; 
+    width: auto;
+    /* margin-right est géré par le gap du parent .header-brand-group */
+}
+.header-brand-group > div { /* Conteneur pour nom/sous-titre */
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+}
+.header-site-name { font-size: 1.25rem; font-weight: 700; color: #f97316; line-height: 1.2; margin: 0; }
+.header-subtitle { font-size: 0.75rem; color: #6b7280; line-height: 1; margin: 0; }
+
+.header-search-container { flex-grow: 1; min-width: 150px; max-width: 400px; margin-left: auto; margin-right: 1rem; position: relative; }
+.header-search-input {
+    width: 100%; padding: 0.6rem 0.8rem; border: 1px solid #d1d5db; 
+    border-radius: 0.375rem; font-size: 0.9rem; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.header-search-input::placeholder { color: #9ca3af; }
+.header-search-input:focus { outline: none; border-color: #f97316; box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2); }
+
+.header-actions { /* Conteneur pour les actions du header */
+    display: flex;
+    align-items: center;
+    /* Si vous aviez un bouton ici, il aurait besoin de position:relative pour son badge */
+}
+
+/* Bouton Retour (utilisé sur les écrans de détails/liste/favoris) */
+.header-back-btn {
+    display: flex; align-items: center; background-color: transparent; border: none; 
+    font-size: 1rem; color: #f97316; padding: 0.25rem 0; cursor: pointer; 
+    /* margin-bottom est appliqué via classe utilitaire .mb-4 dans le HTML généré */
+    margin-right: 0.75rem; 
+    line-height: 1; font-weight: 500;
+}
+.header-back-btn:hover { color: #ea580c; }
+.header-back-btn .icon { font-size: 1.25rem; margin-right: 0.25rem; }
+
+
+/* ==========================================================================
+   4. Main Content Area & Screens
+   ========================================================================== */
+#main-content { padding: 1rem; }
+.screen { display: none; } /* Géré par JavaScript */
+
+/* Titres de section généraux */
+.section-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; color: #1f2937; }
+.sub-section-title { font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: #374151; }
+
+
+/* ==========================================================================
+   5. Components
+   ========================================================================== */
+
+/* --- Bannière Liste de Courses (sur l'accueil) --- */
+#shopping-list-banner {
+    background-color: #ecfdf5; padding: 1rem; border-radius: 0.5rem; 
+    /* margin-bottom géré par .mb-6 dans l'HTML */
+    display: none; /* JS gère l'affichage en flex */
+    justify-content: space-between; align-items: center; border: 1px solid #a7f3d0;
+}
+#shopping-list-banner > div { flex-grow: 1; }
+#banner-recipe-count { font-weight: 600; color: #047857; font-size: 1rem; }
+#shopping-list-banner p { font-size: 0.875rem; color: #059669; margin-top: 0.1rem; }
+#banner-view-list-btn {
+    background-color: #10b981; color: white; padding: 0.5rem 1rem; border-radius: 0.375rem;
+    font-size: 0.875rem; display: flex; align-items: center; text-decoration: none; transition: background-color 0.2s;
+}
+#banner-view-list-btn:hover { background-color: #059669; }
+#banner-view-list-btn .icon { margin-right: 0.375rem; }
+
+/* --- Section Catégories --- */
+#categories-container {
+    display: flex; flex-wrap: wrap; gap: 0.5rem; padding-bottom: 0.5rem;
+    align-items: flex-start; max-height: 5.5rem; /* Ajustez pour ~2 lignes */
+    overflow-y: hidden;
+}
+.category-item {
+    background-color: #ffedd5; color: #c2410c; padding: 0.4rem 1rem; 
+    border-radius: 9999px; font-size: 0.8rem; font-weight: 500; 
+    border: 1px solid transparent; cursor: pointer; white-space: nowrap;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.category-item:hover { background-color: #fed7aa; }
+.category-item.active-category { background-color: #f97316; color: white; border-color: #ea580c; }
+
+@media (min-width: 768px) {
+    #categories-container {
+        /* Sur grand écran, on peut enlever la limite de hauteur et laisser s'étaler ou centrer */
+        /* max-height: none; */
+        /* overflow-y: visible; */
+        /* justify-content: center; */
+    }
+}
+
+/* --- Sélecteur Nombre de Personnes --- */
+.flex-justify-between-items-center { display: flex; justify-content: space-between; align-items: center; /* margin-bottom géré par .mb-X */}
+#number-of-people-select {
+    padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem;
+    background-color: white; font-size: 0.9rem;
+}
+#number-of-people-select:focus { outline: none; border-color: #f97316; box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2); }
+
+/* --- Grille et Cartes de Recettes --- */
+.recipes-grid-layout {
+    display: grid; gap: 1rem; /* margin-top géré par .mt-X */
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+}
+@media (min-width: 768px) { .recipes-grid-layout { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); } }
+@media (min-width: 1024px) { .recipes-grid-layout { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); } }
+@media (min-width: 1280px) { .recipes-grid-layout { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); } }
+
+.recipe-card {
+    background-color: white; border-radius: 0.75rem; overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.07);
+    cursor: pointer; transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    display: flex; flex-direction: column;
+}
+.recipe-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.08); }
+.recipe-card img { width: 100%; height: 9rem; object-fit: cover; }
+.recipe-card-content { padding: 0.75rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.recipe-card-title {
+    font-weight: 600; font-size: 0.9rem; line-height: 1.35; max-height: 2.7em;
+    overflow: hidden; text-overflow: ellipsis; display: -webkit-box; 
+    -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 0.25rem; color: #1f2937;
+}
+.recipe-card-info { font-size: 0.75rem; color: #6b7280; margin-top: auto; margin-bottom: 0.5rem; }
+.recipe-card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; }
+.recipe-card-price { font-size: 0.875rem; font-weight: 600; color: #1f2937; }
+.star-icon { font-size: 1.3rem; color: #f59e0b; cursor: pointer; transition: transform 0.1s ease-in-out; }
+.star-icon:hover { transform: scale(1.2); }
+
+
+/* --- Écran de Détails de Recette --- */
+#recipe-details-screen img { width: 100%; height: 12rem; object-fit: cover; border-radius: 0.75rem; margin-bottom: 1rem; }
+#recipe-details-screen h2 { font-size: 1.75rem; font-weight: bold; margin-bottom: 0.5rem; color: #111827; }
+#recipe-details-screen > p.text-sm.text-gray-600 { font-size: 0.9rem; color: #4b5563; margin-bottom: 1.5rem; line-height: 1.7; }
+.ingredients-box {
+    background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.5rem;
+    padding: 1rem; margin-top: 1rem;
+}
+.ingredients-box ul { list-style-type: none; padding-left: 0; }
+.ingredients-box li { padding: 0.3rem 0; border-bottom: 1px dashed #e5e7eb; font-size: 0.9rem; }
+.ingredients-box li:last-child { border-bottom: none; }
+.ingredients-box li strong { color: #1f2937; }
+.ingredients-box li .text-xs.text-gray-500 { font-size: 0.75rem; color: #6b7280; margin-left: 0.5rem; font-style: italic; }
+.steps-list { list-style: none; padding-left: 0; margin-top: 1rem; }
+.steps-list li { display: flex; align-items: flex-start; margin-bottom: 1rem; line-height: 1.6; font-size: 0.9rem; }
+.steps-list li p { flex-grow: 1; }
+.step-number {
+    background-color: #f97316; color: white; min-width: 1.75rem; height: 1.75rem;
+    border-radius: 9999px; display: flex; align-items: center; justify-content: center;
+    font-weight: 600; margin-right: 0.75rem; flex-shrink: 0; font-size: 0.875rem;
+}
+#recipe-details-screen .flex.justify-around { display: flex; justify-content: space-around; gap: 1rem; margin-top: 1.5rem; margin-bottom: 1rem; }
+#recipe-details-screen .flex.justify-around .btn { flex-grow: 1; max-width: 48%; }
+
+/* --- Boutons Génériques --- */
+.btn {
+    padding: 0.6rem 1.2rem; border-radius: 0.5rem; border: none; cursor: pointer;
+    font-weight: 500; font-size: 0.9rem; transition: background-color 0.2s, box-shadow 0.2s;
+    text-align: center; display: inline-flex; align-items: center; justify-content: center;
+}
+.btn .icon { margin-right: 0.5rem; }
+.btn-primary { background-color: #f97316; color: white; }
+.btn-primary:hover { background-color: #ea580c; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.btn-secondary { background-color: #16a34a; color: white; }
+.btn-secondary:hover { background-color: #15803d; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.btn-danger { background-color: #ef4444; color: white; }
+.btn-danger:hover { background-color: #dc2626; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.w-full { width: 100%; }
+
+/* --- Écrans Liste de Courses et Favoris --- */
+#list-screen h2, #favorites-screen h2 {
+    font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+#list-screen .rayon-title {
+    color: #c2410c; border-bottom: 2px solid #f97316; padding-bottom: 0.25rem;
+    font-weight: 600; font-size: 1.125rem; margin-bottom: 0.5rem; margin-top: 1rem;
+}
+#list-screen .list-style-none { list-style-type: none; padding-left: 0; }
+#list-screen .space-y-1 > li + li { margin-top: 0.25rem; } 
+
+#list-screen .ingredient-item {
+    border-bottom: 1px solid #f3f4f6; padding: 0.5rem 0.25rem;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background-color 0.1s;
+}
+#list-screen .ingredient-item:hover { background-color: #f9fafb; }
+#list-screen .ingredient-item .ingredient-text {
+    flex-grow: 1; font-size: 0.9rem; color: #374151;
+}
+#list-screen .ingredient-item.checked .ingredient-text {
+    text-decoration: line-through; color: #9ca3af;
+}
+.shopping-list-checkbox {
+    margin-left: 0.75rem; height: 1.25rem; width: 1.25rem;
+    border-radius: 0.25rem; border: 1px solid #d1d5db; 
+    color: #f97316; cursor: pointer;
+    -webkit-appearance: none; -moz-appearance: none; appearance: none;
+    background-color: #fff; display: inline-block; position: relative;
+    vertical-align: middle; flex-shrink: 0; /* Empêche le rétrécissement */
+}
+.shopping-list-checkbox:checked { background-color: #f97316; border-color: #f97316; }
+.shopping-list-checkbox:checked::before {
+    content: '✔'; font-size: 0.9rem; color: white; position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%); line-height: 1;
+}
+.shopping-list-checkbox:focus {
+    outline: 2px solid transparent; outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.3);
+}
+.print-checkbox-display {
+    display: inline-block; width: 16px; height: 16px;
+    border: 1px solid #6b7280; margin-right: 0.5rem;
+    vertical-align: middle; position: relative; flex-shrink: 0;
+}
+.print-checkbox-display.checked::before {
+    content: '✔'; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%); font-size: 12px; color: #16a34a;
+}
+.actions-group { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; }
+.actions-group .btn + .btn { margin-top: 0.75rem; }
+
+
+/* ==========================================================================
+   6. Navigation Basse
+   ========================================================================== */
+#bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background-color: #ffffff; border-top: 1px solid #e5e7eb;
+    padding-top: 0.25rem; padding-bottom: 0.25rem;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+    z-index: 1000;
+}
+#bottom-nav .nav-container { max-width: 28rem; margin-left: auto; margin-right: auto; display: flex; justify-content: space-around; }
+.nav-btn {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 0.5rem; background: none; border: none; cursor: pointer;
+    color: #6b7280; transition: color 0.2s;
+    flex: 1;
+}
+.nav-btn .icon-wrapper {
+    position: relative; display: inline-flex; 
+    align-items: center; justify-content: center;
+}
+.nav-btn .icon { font-size: 1.4rem; }
+.nav-btn .nav-text { font-size: 0.7rem; margin-top: 0.15rem; }
+.nav-btn.active-nav, .nav-btn:hover { color: #f97316; }
+
+.nav-badge {
+    position: absolute; top: -5px; right: -8px; 
+    background-color: #ef4444; color: white; font-size: 0.6rem; font-weight: bold;
+    padding: 1px 4px; border-radius: 7px; line-height: 1;
+    min-width: 14px; height: 14px; display: flex; align-items: center; justify-content: center;
+    border: 1px solid white; pointer-events: none;
+}
+
+/* ==========================================================================
+   7. Utility Classes (celles utilisées dans le HTML ou le JS)
+   ========================================================================== */
+.mb-3 { margin-bottom: 0.75rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.mr-1 { margin-right: 0.25rem; }
+.mr-2 { margin-right: 0.5rem; } /* Ajoutée si utilisée pour .print-checkbox-display */
+.mr-3 { margin-right: 0.75rem; } /* Ajoutée si utilisée */
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 0.75rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-6 { margin-top: 1.5rem; }
+.mt-8 { margin-top: 2rem; } /* Pour .actions-group */
+
+.pt-4 { padding-top: 1rem; } /* Pour .actions-group */
+
+.space-y-1 > * + * { margin-top: 0.25rem; } /* Pour ul dans la liste de courses */
+.space-y-3 > * + * { margin-top: 0.75rem; } /* Pour .actions-group (alternative à .btn + .btn) */
+
+
+.text-sm { font-size: 0.875rem; }
+.text-lg { font-size: 1.125rem; }
+.text-xl { font-size: 1.25rem; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+.text-center { text-align: center; }
+
+.text-gray-500 { color: #6b7280; }
+.text-gray-600 { color: #4b5563; }
+.text-orange-500 { color: #f97316; }
+.text-orange-600 { color: #ea580c; }
+.text-orange-700 { color: #c2410c; }
+.text-yellow-500 { color: #f59e0b; }
+.text-green-600 { color: #16a34a; }
+.text-green-800 { color: #065f46; }
+.text-white { color: #ffffff; }
+
+.flex { display: flex; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; } /* Ajouté pour .btn */
+.justify-between { justify-content: space-between; }
+.justify-around { justify-content: space-around; }
+.flex-grow { flex-grow: 1; }
+.flex-shrink-0 { flex-shrink: 0; }
+
+.col-span-full { grid-column: 1 / -1; }
+
+/* ==========================================================================
+   8. Styles d'Impression
+   ========================================================================== */
+@media print {
+    body {
+        font-size: 10pt; color: black !important; background-color: white !important;
+        -webkit-print-color-adjust: exact; /* Forcer l'impression des couleurs de fond et texte si besoin pour certains éléments */
+        print-color-adjust: exact;
+    }
+    #app-header, #bottom-nav, #main-content > div.screen:not(#list-screen),
+    #list-screen-back-btn, #clear-list-btn, #print-list-btn .icon,
+    #shopping-list-banner, #categories-container, #number-of-people-select,
+    .flex-justify-between-items-center:has(#number-of-people-select),
+    #main-content > #favorites-screen, #main-content > #recipe-details-screen /* Cacher détails et favoris aussi */
+    {
+        display: none !important;
+    }
+    .app-container { max-width: 100% !important; padding-bottom: 0 !important; min-height: auto !important; box-shadow: none !important; border: none !important; }
+    #main-content { padding: 0 !important; }
+    #list-screen { display: block !important; padding: 1cm !important; } 
+    #list-screen h2 {
+        font-size: 16pt !important; text-align: center !important; margin-bottom: 1rem !important;
+        border-bottom: 1px solid black !important; color: black !important;
+    }
+    #list-screen .rayon-title {
+        font-size: 12pt !important; color: black !important; border-bottom: 1px solid #999 !important;
+        margin-top: 0.75rem !important; page-break-after: avoid !important;
+    }
+    #list-screen .ingredient-item {
+        padding: 0.2rem 0 !important; border-bottom: 1px dotted #ccc !important;
+        page-break-inside: avoid !important; /* Tenter d'éviter de couper un item sur deux pages */
+    }
+    .shopping-list-checkbox { display: none !important; }
+    .print-checkbox-display { display: inline-block !important; border-color: black !important; }
+    .print-checkbox-display.checked::before { color: black !important; /* Coche visible en noir */ }
+    .ingredient-item.item-to-remove-on-print { display: none !important; }
+    
+    * { /* Forcer le texte en noir et fond transparent pour économie d'encre */
+        background: transparent !important;
+        color: #000 !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    /* Éviter d'imprimer les URLs des liens par défaut */
+    a[href]:after { content: ""; } 
+}
